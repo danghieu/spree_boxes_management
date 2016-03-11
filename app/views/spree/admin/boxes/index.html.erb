@@ -21,9 +21,11 @@
       <tbody>
         <% @collection.each do |box| %>
             <tr >
-              <td class="box_img">
-                <%= mini_image box %>
-              </td>
+              <% if box.images.any? %>
+                <td class="align-center box_img"><%= image_tag box.images.first.attachment.url(:mini) %></td>
+              <% else %>
+                <td class="align-center box_img"></td>
+              <% end %>
               <td><%= link_to box.try(:name), edit_admin_box_path(box) %></td>
               <td ><%= truncate(box.descriptions, escape: false){ link_to " more",  edit_admin_box_url(box)}%></td>
               <td>
