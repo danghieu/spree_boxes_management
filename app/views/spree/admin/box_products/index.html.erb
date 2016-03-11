@@ -32,7 +32,9 @@
 			<%end%>
 	</div>
 </div>
-<script src="../app/assets/javascripts/spree/backend/box/box_products.js"></script>
+<%=  javascript_include_tag "assets/spree/backend/box/box_products.js" %>
+
+
 <script type="text/javascript">
   $(".select-dish").hide();
   $("body").on('click', '#dish_field', function() {
