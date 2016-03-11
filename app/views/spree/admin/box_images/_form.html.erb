@@ -1,0 +1,12 @@
+<div data-hook="admin_image_form_fields" class="row">
+  <div class="col-md-6">
+    <div data-hook="file" class="form-group">
+      <%= f.label :attachment, Spree.t(:filename) %>
+      <%= f.file_field :attachment , name: "box_image[attachment]", accept: 'image/png,image/gif,image/jpeg' %>
+    </div>
+    <div data-hook="variant" class="field">
+      <%= f.hidden_field :viewable_id, name: "box_image[viewable_id]", :value => @box_image.viewable_id %><br>
+    </div>
+  </div>
+  
+</div>
