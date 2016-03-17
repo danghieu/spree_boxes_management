@@ -1,41 +1,50 @@
 <% content_for :page_title do %>
-  <%= link_to Spree.t(:boxes), admin_boxes_url %>
-  / <%=@box.name %>
-<% end 
-%>
-<%= render partial: 'spree/admin/shared/box_tabs', locals: {current: :dishes} %>
-<div class="form-group field col-md-12">
-
-	<div class="form-group field col-md-12" id="box_dish_field">
-		  <% @dish_types.each do |dish_type| %>
-				<div class="form-group col-md-12" data-dish-type="<%= dish_type.id%>" id="dish_field">
-				  <label for="dish_box_dish"><%= dish_type.name%>:</label>
-				  <% @box.products.each do |dish| %>
-				  	<% if dish.dish_type_id == dish_type.id %>
-					  	<div id="dish-<%= dish_type.id%>" class = "dish">
-					  			<div class="image"><%= product_image dish %></div>
-					  			<div class="product-name"><%=dish.name%></div>
-					  			<span class="icon icon-chevron-down" style="padding-top: 20px;float: right;"></span>
-					  	</div >
-					  	<div id="select-dish-<%= dish_type.id%>" class="select-dish">
-					  		<form class='form-search' role='search'  method='get'  name='form-search' autocomplete='off'>
-						  	  <div class='input-group' data-id='<%= dish_type.id%>' style="width: 100%;">
-						      	<input type='text' class='form-control' name='q' id='q' type='text' placeholder='Choose the dish'>
-						  		</div>
-						  		<div class='search-result' data-product-id-old='<%= dish.id%>' id='search-result-<%= dish_type.id%>' data-box='<%= @box.id%>'  data-index='<%= dish_type.id%>'>
-						  		</div>
-						   	</form>
-					  	</div>
-					  <% end  %>
-				 	<% end  %>
-				</div>
-			<%end%>
-	</div>
+  <%= Spree.t(:AvailableOn) %>
+<% end %>
+<div id="wrap_week_action">
+    <button id="left-button" class="col-md-1 btn-action btn-pre btn btn-primary">
+      <i class="icon icon-chevron-left"></i>
+    </button>
+  <div class="center-bar col-md-8  ">
+    <span class="center-bar-text">This Week</span>
+    <p class="dayofweek"></p>
+  </div>
+  <button id="right-button" class=" btn-action btn-next btn btn-primary">
+      <i class="icon icon-chevron-right"></i>
+    </button>
 </div>
-<%=  javascript_include_tag "assets/spree/backend/box/box_products.js" %>
 
+<div style="clear:both"></div>
+<div id = "available-on-box"></div>
+<div id="container-available-on">
+  <div>
+    
+  </div>
+</div>
 
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 <script type="text/javascript">
+$(document).ready(function () {
+  'use strict';
   $(".select-dish").hide();
   $("body").on('click', '#dish_field', function() {
     var dish_type = $(this).attr('data-dish-type');
@@ -50,18 +59,22 @@
     updateSearchListDishType(q, index);
   });
 
-  $("body").on('click', '.product-select', function() {
+  $("body").on('click', '.box-product-select', function() {
     var product_id_new = $(this).attr('data-id');
     var data_box = $(this).parent().parent().parent().attr("data-box");
     var data_index = $(this).parent().parent().parent().attr("data-index");
     var product_id_old = $(this).parent().parent().parent().attr("data-product-id-old");
+    var serve_date = $(this).parent().parent().parent().attr("data-date");
     console.log(product_id_new);
     console.log(data_box);
     console.log(product_id_old);
-    addDishToBox(product_id_new, product_id_old, data_box, data_index);
+    addDishToBox(product_id_new, product_id_old, data_box, data_index,serve_date);
   });
 
-  function addDishToBox(product_id_new, product_id_old, box_id, index) {
+});
+
+
+function addDishToBox(product_id_new, product_id_old, box_id, index,serve_date) {
     Url = Spree.routes.box_product_create;
     $.ajax({
       url: Url,
@@ -71,8 +84,7 @@
         product_id_old: product_id_old,
         box_id: box_id,
         product_id_new: product_id_new,
-
-
+        serve_date:serve_date
       },
       success: function(data_result) {
         dish = data_result.products
@@ -80,14 +92,23 @@
         if (dish.images[0] != null)
           dish_image = dish.images[0].product_url;
         else dish_image = "/assets/noimage/large.png";
-        var name = "#dish-" + index;
+        var name = "#box-dish-" + index;
         $(name).html("");
         $(name).append(
           "<div class='image'><img src='" + dish_image + "'></div>\
-					 <div class='product-name'>" + dish.name + "</div>\
-					 <span class='icon icon-chevron-down' style='padding-top: 20px;float: right;''></span>"
+           <div class='product-name'>" + dish.name + "</div>\
+           <span class='icon icon-chevron-down' style='padding-top: 20px;float: right;''></span>"
         );
         $("#search-result-" + index).attr("data-product-id-old", dish.id);
+
+        var divname = "#box-dish-"+product_id_old+"-"+serve_date;
+        $(divname).html(
+          "<p class='product_name'>" +dish.dish_type.name + "</p>\
+            <div class='image'> <img src='"+ dish_image +"'</div>\
+            <p class='product_name'>"+dish.name+"</p>\
+            "
+        );
+        $(divname).attr("id","box-dish-"+dish.id+"-"+serve_date);
         //window.location.reload(true);
       },
       error: function(result) {
@@ -121,10 +142,10 @@
             if (dish.images[0] != null)
               dish_image = dish.images[0].product_url;
             else dish_image = "/assets/noimage/large.png";
-            html += "<tr class='product-select' data-id='" + dish.id + "'>\
-		                  <td class ='product-image'><img src='" + dish_image + "'></td>\
-		                  <td class ='product-image'>" + dish.name + "</td>\
-		                </tr>";
+            html += "<tr class='box-product-select' data-id='" + dish.id + "'>\
+                      <td class ='product-image'><img src='" + dish_image + "'></td>\
+                      <td class ='product-image'>" + dish.name + "</td>\
+                    </tr>";
           });
           html += " </table>";
           $("#search-result-" + dish_type).html(html);
@@ -137,3 +158,4 @@
     });
   }
 </script>
+

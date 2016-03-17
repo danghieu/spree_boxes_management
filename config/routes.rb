@@ -20,6 +20,7 @@ Spree::Core::Engine.routes.draw do
   namespace :api do
     post "products_search_by_dish_type_and_name" => "products#search_by_dish_type_and_name"
     post "box_product_create" => "box_products#update"
+    get  "boxes_serve_date" => "box_products#serve_date"
   end
-
+    
 end

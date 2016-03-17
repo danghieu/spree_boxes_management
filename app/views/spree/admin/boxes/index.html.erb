@@ -1,20 +1,15 @@
 <% content_for :page_title do %>
   <%= Spree.t(:boxes) %>
 <% end %>
-<% content_for :page_actions do %>
-  <%= button_link_to Spree.t(:new_box), new_admin_box_url, { :class => "btn-success", :icon => 'plus', :id => 'admin_new_box' } %>
-<% end if can?(:create, Dish::Box) %>
 
   <% if @collection.any? %>
     <table class="table" id="listing_products">
       <thead>
         <tr data-hook="admin_products_index_headers">
-          <th class="col-md-1">Image</th>
-          <th class="col-md-2"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %>
+          <th class="col-md-3">Image</th>
+          <th class="col-md-3"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %>
           </th>
-          <th class="col-md-2">Descriptions</th>
-          <th class="col-md-3">Dishes</th>
-          <th class="col-md-1">Status</th>
+          <th class="col-md-4">Descriptions</th>
           <th data-hook="admin_products_index_header_actions" class="actions"></th>
         </tr>
       </thead>
@@ -27,26 +22,10 @@
                 <td class="align-center box_img"></td>
               <% end %>
               <td><%= link_to box.try(:name), edit_admin_box_path(box) %></td>
-              <td ><%= truncate(box.descriptions, escape: false){ link_to " more",  edit_admin_box_url(box)}%></td>
-              <td>
-               <% box.products.each do |dish|%>
-                <div class="box_product ">
-                  <div class="image" style="float: left;"> <%=mini_image dish%></div>
-                  <div class = "product_name box_product_name"><a href="<%=edit_admin_product_url(dish) %>"><%= truncate(dish.name, escape: false)%> </a>
-                  </div>
-                </div>
-               <% end%>
-              </td>
-              <td>
-                <% if box.is_active %>
-                    <button id="<%=box.id %>" type="button" class="btn btn-large btn-block btn-success btn-active">True</button>
-                <% else %>
-                    <button id="<%=box.id %>" type="button" class="btn btn-large btn-block btn-warning btn-active">False</button>
-                <% end %>
+              <td ><%= truncate(box.descriptions, escape: false){ link_to " more",  edit_admin_box_url(box)}%>
               </td>
               <td class="actions actions-3 text-right" data-hook="admin_products_index_row_actions">
                 <%= link_to_edit box, no_text: true, class: 'edit' if can?(:edit, box)%>
-                <%= link_to_delete box, no_text: true if can?(:delete, box)%>
               </td>
             </tr>
         <% end %>
@@ -60,16 +39,3 @@
   <% end %>
 
 
- 
-
-<script type="text/javascript">
-  $(".btn-active").click(function() {
-    var id = $(this).attr('id')
-    $.ajax('/admin/boxes/' + id + '/active', {
-      type: "post",
-      success: function(data) {
-        window.location.reload(true);
-      }
-    });
-  });
-</script>

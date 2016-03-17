@@ -20,7 +20,7 @@
     <thead>
       <tr data-hook="images_header">
         <th colspan="2"><%= Spree.t(:thumbnail) %></th>
-        <th><%= Spree.t(:alt_text) %></th>
+        <th></th>
         <th class="actions"></th>
       </tr>
     </thead>
@@ -34,9 +34,9 @@
             <%= link_to image_tag(image.attachment.url(:mini)), image.attachment.url(:normal) %>
           </td>
 
-          <td><%= image.alt %></td>
+          <td></td>
           <td class="actions">
-            <%= link_to_with_icon 'edit', Spree.t(:edit), edit_admin_box_box_image_url(@box, image), :no_text => true, :data => {:action => 'edit'} %>
+            <%= link_to_with_icon 'edit', Spree.t(:edit), edit_admin_box_box_image_url(@box, image), :no_text => true, :data => {:action => 'edit',:class =>'btn-primary'} %>
           </td>
 
         </tr>
