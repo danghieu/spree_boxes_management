@@ -1,5 +1,6 @@
 <% content_for :page_title do %>
-  <%= Spree.t(:AvailableOn) %>
+  <%= link_to Spree.t(:boxs), admin_boxes_url %>
+  /  <%= link_to @box.name, admin_box_url(@box) %> / Available On
 <% end %>
 <div id="wrap_week_action">
     <button id="left-button" class="col-md-1 btn-action btn-pre btn btn-primary">
@@ -45,6 +46,16 @@
 <script type="text/javascript">
 $(document).ready(function () {
   'use strict';
+  var Url = Spree.routes.products_search_by_dish_type_and_name;
+  var type = "post";
+  var data =  {
+        q: "a",
+        dish_type: 2,
+        serve_date:"2016-3-17",
+      }
+  var data_result = getData(Url,data,type)
+  console.log(data_result);
+
   $(".select-dish").hide();
   $("body").on('click', '#dish_field', function() {
     var dish_type = $(this).attr('data-dish-type');
@@ -55,8 +66,8 @@ $(document).ready(function () {
     var index = $(this).parent().attr('data-id');
     $("#search-result-" + index).show();
     var q = $(this).val();
-    var index = $(this).parent().attr("data-id");
-    updateSearchListDishType(q, index);
+    var serve_date = $(this).parent().attr("data-date");
+    updateSearchListDishType(q, index,serve_date);
   });
 
   $("body").on('click', '.box-product-select', function() {
@@ -65,9 +76,6 @@ $(document).ready(function () {
     var data_index = $(this).parent().parent().parent().attr("data-index");
     var product_id_old = $(this).parent().parent().parent().attr("data-product-id-old");
     var serve_date = $(this).parent().parent().parent().attr("data-date");
-    console.log(product_id_new);
-    console.log(data_box);
-    console.log(product_id_old);
     addDishToBox(product_id_new, product_id_old, data_box, data_index,serve_date);
   });
 
@@ -118,7 +126,7 @@ function addDishToBox(product_id_new, product_id_old, box_id, index,serve_date) 
     });
   }
 
-  function updateSearchListDishType(q, dish_type) {
+  function updateSearchListDishType(q, dish_type,serve_date) {
     Url = Spree.routes.products_search_by_dish_type_and_name;
 
     $.ajax({
@@ -128,7 +136,8 @@ function addDishToBox(product_id_new, product_id_old, box_id, index,serve_date) 
       data: {
         token: Spree.api_key,
         "q": q,
-        "dish_type": dish_type
+        "dish_type": dish_type,
+        serve_date:serve_date
       },
       success: function(result) {
         var html = "";

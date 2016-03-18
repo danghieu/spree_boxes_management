@@ -7,6 +7,16 @@ module Spree
         Dish::BoxProduct
       end
 
+      def edit
+        
+      end
+
+      def index 
+        unless @box.is_active
+           render action: 'edit'
+        end 
+      end
+
       def show
         redirect_to action: :edit
       end

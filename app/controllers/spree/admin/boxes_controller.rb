@@ -12,13 +12,7 @@ module Spree
       end
 
       def create
-        @box = Dish::Box.new(box_params)
-        @dish_types = Dish::DishType.all
-        @dish_types.each do |dish_type|
-          @box.products<<[Spree::Product.where(dish_type_id: dish_type.id).first]
-        end
-        @box.save
-        redirect_to  admin_boxes_url
+        
       end
 
       def load_data

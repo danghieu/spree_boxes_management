@@ -32,7 +32,6 @@
 			<%end%>
 	</div>
 </div>
-<%=  javascript_include_tag "assets/spree/backend/box/box_products.js" %>
 
 
 <script type="text/javascript">
@@ -99,7 +98,7 @@
 
   function updateSearchListDishType(q, dish_type) {
     Url = Spree.routes.products_search_by_dish_type_and_name;
-
+    serve_date =null;
     $.ajax({
       url: Url,
       type: "post",
@@ -107,7 +106,7 @@
       data: {
         token: Spree.api_key,
         "q": q,
-        "dish_type": dish_type
+        "dish_type": dish_type,
       },
       success: function(result) {
         var html = "";

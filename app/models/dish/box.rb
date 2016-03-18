@@ -12,5 +12,14 @@ module Dish
       :allow_destroy => true
     accepts_nested_attributes_for :products
     accepts_nested_attributes_for :comments
+
+    def self.add_weekly_box
+        box = Dish::Box.create(name: "Weekly Box",is_active: false)
+        dish_types = Dish::DishType.all
+        dish_types.each do |dish_type|
+          box.products<<[Spree::Product.where(dish_type_id: dish_type.id).first]
+        end
+        box.save
+    end
   end
 end
