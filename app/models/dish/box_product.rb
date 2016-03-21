@@ -32,7 +32,7 @@ module Dish
       	
         if nextWeek > max_d
           7.times.each do |i|
-            serve_date = nextWeek+7+i
+            serve_date = nextWeek+i
             products=[]
             product_ids = Dish::AvailableOn.where(:delivery_date => serve_date).pluck(:product_id)
             ps = Spree::Product.where(:id => product_ids)

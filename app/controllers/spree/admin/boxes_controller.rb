@@ -2,7 +2,6 @@ module Spree
   module Admin
     class BoxesController < ResourceController
       before_action :load_data, except: :index
-      #create.after :add_dishes_to_box
       def model_class
         Dish::Box
       end
@@ -36,20 +35,7 @@ module Spree
       def box_params
         params.require(:box).permit(:name, :descriptions)
       end
-
-      private
-      def add_dishes_to_box
-        p "2222222222222222222222222222222222222222222222222222222222222222222222222"
-        @box = Dish::Box.new(box_params)
-        @dish_types = Dish::DishType.all
-        @dish_types.each do |dish_type|
-          @box.products<<[Spree::Product.where(dish_type_id: @dish_type.id).first]
-        end
-        @box.save
-        redirect_to  admin_boxes_url
-
-      end
-
+      
       def collection
         return @collection if @collection.present?
         params[:q] ||= {}
