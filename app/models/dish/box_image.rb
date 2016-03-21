@@ -3,7 +3,7 @@ module Dish
     validate :no_attachment_errors
 
     has_attached_file :attachment,
-                      styles: { mini: '200x200>', normal: '200x200>'},
+                      styles: { mini: '200x150>', normal: '200x150>'},
                       default_style: :box,
                       url: '/spree/boxes/:id/:style/:basename.:extension',
                       path: ':rails_root/public/spree/boxes/:id/:style/:basename.:extension',
