@@ -14,9 +14,9 @@ module Spree
       end
 
       def serve_date
-        if params[:serve_date]
+        if params[:serve_date] 
           date = Date.parse(params[:serve_date])
-          product_ids = Dish::BoxProduct.where(:delivery_date => date).pluck(:product_id)
+          product_ids = Dish::BoxProduct.where(:delivery_date => date,:box_id => params[:box_id]).pluck(:product_id)
           @products = Spree::Product.where(:id => product_ids).order(:dish_type_id)
           render "spree/api/available_ons/serve_date", status: 200
         end
