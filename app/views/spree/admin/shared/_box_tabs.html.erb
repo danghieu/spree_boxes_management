@@ -11,7 +11,7 @@
 
     <%= content_tag :li, class: ('active' if current == :images) do %>
       <%if @box.images.any? %>
-        <%= link_to_with_icon 'picture', Spree.t(:images), admin_box_box_images_url(@box) %>
+        <%= link_to_with_icon 'picture', Spree.t(:images), edit_admin_box_box_image_url(@box,@box.images.first) %>
       <%else %>
          <%= link_to_with_icon 'picture', Spree.t(:images), new_admin_box_box_image_url(@box) %>
       <% end %>

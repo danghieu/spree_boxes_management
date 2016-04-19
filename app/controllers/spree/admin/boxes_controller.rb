@@ -49,6 +49,7 @@ module Spree
         # @search needs to be defined as this is passed to search_form_for
         @search = @collection.ransack(params[:q])
         @collection = @search.result.
+              includes(:images).
               page(params[:page]).
               per(params[:per_page] || Spree::Config[:admin_products_per_page])
 

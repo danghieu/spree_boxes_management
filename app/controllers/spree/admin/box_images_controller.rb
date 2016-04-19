@@ -10,7 +10,8 @@ module Spree
         Dish::BoxImage
       end
 
-      def edit
+      def show
+        redirect_to action: :edit
       end
 
       def new
@@ -22,7 +23,7 @@ module Spree
         end
 
         def location_after_save
-          admin_box_box_images_url(@box)
+          edit_admin_box_box_image_url(@box,@box.images.first)
         end
 
         def load_data
