@@ -13,14 +13,15 @@ $(document).ready(function() {
       $(".select-dish").hide();
       $("#select-dish-" + dish_type).show();
     })
-    
-    $("body").on('keyup', '#q', function() {
-      var index = $(this).parent().attr('data-id');
-      var serve_date = $(this).parent().attr("data-date");
-      $("#search-result-"+ index+ serve_date).show();
-      var q = $(this).val();
-      updateSearchListDishType(q, index, serve_date);
-    });
+    if ($('#available-on-box').length>0){
+      $("body").on('keyup', '#q', function() {
+        var index = $(this).parent().attr('data-id');
+        var serve_date = $(this).parent().attr("data-date");
+        $("#search-result-"+ index+ serve_date).show();
+        var q = $(this).val();
+        updateSearchListDishType(q, index, serve_date);
+      });
+    }
 
     $("body").on('click', '.box-product-select', function() {
       var product_id_new = $(this).attr('data-id');
@@ -79,8 +80,6 @@ $(document).ready(function() {
 
   function updateSearchListDishType(q, dish_type,serve_date) {
     Url = Spree.routes.products_search_by_dish_type_and_name;
-    console.log(dish_type);
-    console.log(serve_date);
     $.ajax({
       url: Url,
       type: "post",
