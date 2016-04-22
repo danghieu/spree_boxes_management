@@ -1,0 +1,17 @@
+<% content_for :page_title do %>
+  <%= link_to Spree.t(:boxes), admin_boxes_url %>
+  / <%=@box.name %>
+<% end 
+%>
+<%= render partial: 'spree/admin/shared/box_tabs', locals: {current: :details} %>
+<%= form_for @box, method: :put, :url => admin_box_url(@box), :html => {:id => "edit_dish_type", :multipart => true} do |f| %>
+	<fieldset data-hook="edit_dish_type">
+		<%= render :partial => 'form', :locals => { :f => f } %>
+
+		<div class="form-buttons filter-actions actions col-md-12" data-hook="buttons">
+	        <%= button Spree.t('actions.update'), 'ok' %>
+	        <span class="or"><%= Spree.t(:or) %></span>
+	        <%= link_to_with_icon 'remove', Spree.t('actions.cancel'), admin_boxes_url, :class => 'button' %>
+	    </div>
+    </fieldset>
+<% end %>

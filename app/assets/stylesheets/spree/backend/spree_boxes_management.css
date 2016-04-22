@@ -1,0 +1,18 @@
+/*
+Placeholder manifest file.
+the installer will append this file to the app vendored assets here: 'vendor/assets/stylesheets/spree/backend/all.css'
+*/
+.box_product{height: 50px;margin-top: 10px}
+
+.box_product_name{margin-left: 50px}
+
+
+#box_dish_field .search-result{background-color: aliceblue;z-index: 9999;width: 96%}
+
+#box_dish_field .dish{width: 100% ;height: 82px;border: grey 1px solid;}
+#box_dish_field .image img{width: 80px; height: 80px}
+#box_dish_field .image {float: left;}
+
+#box_dish_field .dish .product-name{    margin-left: 20px;padding-top: 20px;float: left;}
+
+#dish_field:hover .dish{background-color: #D6FFAB; cursor: pointer;}

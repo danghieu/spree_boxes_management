@@ -1,0 +1,22 @@
+
+<div data-hook="admin_dish_type_form">
+  <div class="col-md-12" data-hook="admin_dish_type_left">
+
+    <div class = "col-md-12"  class="" data-hook="admin_dish_type_form_name">
+      <%= f.field_container :name, class: ['form-group'] do %>
+        <%= f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *', class: 'required')) %>
+        <%= f.text_field :name,name: "box[name]", class: 'form-control title' %>
+        <%= f.error_message_on :name %>
+      <% end %>
+    </div>
+
+    <div class = "col-md-12" class="" data-hook="admin_dish_type_form_description">
+      <%= f.field_container :descriptions, class: ['form-group'] do %>
+        <%= f.label :descriptions, raw(Spree.t(:description)) %>
+        <%= f.text_area :descriptions,name: "box[descriptions]",rows: 5, class: 'form-control title' %>
+        <%= f.error_message_on :name %>
+      <% end %>
+    </div>
+  </div>
+
+</div> <!--- end admin_product_form_fields-->

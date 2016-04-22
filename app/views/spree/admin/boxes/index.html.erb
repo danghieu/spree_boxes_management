@@ -1,0 +1,41 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:boxes) %>
+<% end %>
+
+  <% if @collection.any? %>
+    <table class="table" id="listing_products">
+      <thead>
+        <tr data-hook="admin_products_index_headers">
+          <th class="col-md-3">Image</th>
+          <th class="col-md-3"><%= sort_link @search,:name, Spree.t(:name), { default_order: "desc" }, {title: 'admin_products_listing_name_title'} %>
+          </th>
+          <th class="col-md-4">Descriptions</th>
+          <th data-hook="admin_products_index_header_actions" class="actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @collection.each do |box| %>
+            <tr >
+              <% if box.images.any? %>
+                <td class="align-center box_img"><%= image_tag box.images.first.attachment.url(:mini) %></td>
+              <% else %>
+                <td class="align-center box_img"></td>
+              <% end %>
+              <td><%= link_to box.try(:name), edit_admin_box_path(box) %></td>
+              <td ><%= truncate(box.descriptions, escape: false){ link_to " more",  edit_admin_box_url(box)}%>
+              </td>
+              <td class="actions actions-3 text-right" data-hook="admin_products_index_row_actions">
+                <%= link_to_edit box, no_text: true, class: 'edit' if can?(:edit, box)%>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-info no-objects-found">
+      <%= Spree.t(:no_resource_found, resource: plural_resource_name(Dish::Box)) %>,
+      <%= link_to Spree.t(:add_one), new_admin_box_url %>!
+    </div>
+  <% end %>
+
+
